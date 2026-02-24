@@ -13,15 +13,20 @@
 
 ### 1. 저장소 클론 (Clone the repository)
 ```bash
-git clone [https://github.com/SWU-HEROS/CrowdSimulation.git](https://github.com/SWU-HEROS/CrowdSimulation.git)
-cd CrowdSimulation
+git clone [https://github.com/SWU-HEROS/SWU_HEROS.git](https://github.com/SWU-HEROS/SWU_HEROS.git)
+cd SWU_HEROS
 ```
 
 ### 2. 의존성 설치 (Install dependencies)
 * **Unity**: Unity 2022.3.28f1 LTS 버전이 필요합니다.
 * **Python**: 다음 명령어를 통해 백엔드 의존성을 설치합니다.
 ```bash
-pip install fastapi==0.129.0 joblib==1.3.1 numpy==2.4.2 pandas==1.5.1 pydantic==2.12.5 py
+cd dataGenerator
+pip install requirements.txt
+
+cd ..
+cd predictAPI
+pip install requirements.txt
 ```
 
 ## 사용 방법 (Usage)
