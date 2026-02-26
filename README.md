@@ -43,10 +43,11 @@ uvicorn main:app --reload
 ## 프로젝트 구조 (Project Structure)
 ```text
 SWU-HEROS/
-├── dataGenerator/          # MongoDB에 저장되는 각 객체 정보 생성
-├── predictAPI/             # 지하철 승하차 인원수 예측
-├── simul_people/           # 시뮬레이션 시 각 객체 좌표 업데이트
-└── unitySystem/            # 3D 디지털 트윈 시스템
+├── dataGenerator/              # MongoDB에 저장되는 각 객체 정보 생성
+├── predictAPI/                 # 지하철 승하차 인원수 예측
+├── pseudonymousProcessingAPI/  # 선택적 개인정보 비식별화 적용 API
+├── simul_people/               # 시뮬레이션 시 각 객체 좌표 업데이트
+└── unitySystem/                # 3D 디지털 트윈 시스템
 ```
 ## 데이터 비식별화 모델 (De-identification Model)
 * **Level 1 (Identifiable Personal Information Level)**: 모든 정보 포함 (전화번호, IMSI 등).
