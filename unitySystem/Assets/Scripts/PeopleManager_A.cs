@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class PeopleManager_A : MonoBehaviour
 {
     public GameObject avatarPrefab;
-    public string collectionName = "people_data"; // 하차
+    public string collectionName = "people_data"; // Alighting
 
     public string mongoConnectionString = "mongodb://localhost:27017";
     public string dbName = "HEROS";
@@ -17,7 +17,7 @@ public class PeopleManager_A : MonoBehaviour
     private class AvatarInfo
     {
         public GameObject avatar;
-        public NavMeshAgent agent;  // ✅ 추가
+        public NavMeshAgent agent;  // Added
         public Vector3 targetPosition;
         public float moveDuration = 10f;
         public float elapsedTime = 0f;
@@ -152,10 +152,10 @@ public class PeopleManager_A : MonoBehaviour
 
     public void UpdatePersonPosition(string peopleID, Vector3 newPosition)
     {
-        // 1️⃣ NavMesh 위 좌표 확인
+        // 1. Check whether the position is on the NavMesh
         if (!NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
         {
-            Debug.LogWarning($"[PeopleManager_B] {peopleID} 위치가 NavMesh 위에 없음, 이동 생략");
+            Debug.LogWarning($"[PeopleManager_B] {peopleID} is not on the NavMesh. Skipping movement.");
             return;
         }
 
@@ -163,27 +163,26 @@ public class PeopleManager_A : MonoBehaviour
 
         if (!peopleDict.ContainsKey(peopleID))
         {
-            // 2️⃣ 아바타 생성
+            // 2. Create an avatar
             GameObject avatar = Instantiate(avatarPrefab, newPosition, Quaternion.Euler(0, 180, 0));
             avatar.name = peopleID;
 
-            // 3️⃣ NavMeshAgent 확인 & Warp
+            // 3. Check the NavMeshAgent and warp the avatar
             NavMeshAgent agent = avatar.GetComponent<NavMeshAgent>();
             if (agent == null) agent = avatar.AddComponent<NavMeshAgent>();
 
-            agent.Warp(newPosition);   // 먼저 NavMesh 위로 이동
+            agent.Warp(newPosition);   // Move onto the NavMesh first
             agent.SetDestination(newPosition);
 
             peopleDict[peopleID] = new AvatarInfo { avatar = avatar, agent = agent };
             return;
         }
 
-        // 이미 존재하는 아바타
+        // Existing avatar
         AvatarInfo info = peopleDict[peopleID];
         NavMeshAgent agentExisting = info.agent ?? info.avatar.AddComponent<NavMeshAgent>();
 
-        agentExisting.Warp(agentExisting.transform.position); // 현재 위치를 NavMesh 위로
+        agentExisting.Warp(agentExisting.transform.position); // Move the current position onto the NavMesh
         agentExisting.SetDestination(newPosition);
     }
-
 }
