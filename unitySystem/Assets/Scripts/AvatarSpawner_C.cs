@@ -30,7 +30,7 @@ public class AvatarSpawner_C : MonoBehaviour
 
         if (positionUpdater == null)
         {
-            Debug.LogError("[Spawner-승차] PositionUpdater_S를 찾을 수 없습니다. PositionUpdaterObject가 활성화되어 있는지 확인하세요!");
+            Debug.LogError("[Spawner-Boarding] PositionUpdater_S was not found. Make sure that PositionUpdaterObject is active.");
             return;
         }
 
@@ -42,7 +42,7 @@ public class AvatarSpawner_C : MonoBehaviour
         int secondsPastHour = DateTime.Now.Minute * 60 + DateTime.Now.Second;
         int secondsToWait = intervalSeconds - (secondsPastHour % intervalSeconds);
 
-        Debug.Log($"[Spawner-승차] {DateTime.Now:HH:mm:ss} - {secondsToWait}초 후 첫 생성 시작");
+        Debug.Log($"[Spawner-Boarding] {DateTime.Now:HH:mm:ss} - Initial spawn will begin in {secondsToWait} seconds");
         yield return new WaitForSeconds(secondsToWait);
 
         StartCoroutine(SpawnPassengersLoop());
@@ -56,7 +56,7 @@ public class AvatarSpawner_C : MonoBehaviour
         {
             if (SimulationController.Instance != null && SimulationController.Instance.isNonStopMode)
             {
-                Debug.Log($"[Spawner-승차] 무정차 중이므로 스폰 생략 (무정차 횟수: {SimulationController.Instance.nonStopCount})");
+                Debug.Log($"[Spawner-Boarding] Spawn skipped due to non-stop mode (Non-stop count: {SimulationController.Instance.nonStopCount})");
                 yield return new WaitForSeconds(intervalSeconds);
                 continue;
             }
@@ -76,7 +76,7 @@ public class AvatarSpawner_C : MonoBehaviour
             int totalSpawnCount = PredictionManager.Instance.GetRemainingBoardingCount();
             int spawnCount = totalSpawnCount / 2;
 
-            Debug.Log($"[Spawner-On] {DateTime.Now:HH:mm:ss} - 생성할 승차 인원 수: {spawnCount}");
+            Debug.Log($"[Spawner-On] {DateTime.Now:HH:mm:ss} - Number of boarding passengers to spawn: {spawnCount}");
         }
     }
 
@@ -88,18 +88,18 @@ public class AvatarSpawner_C : MonoBehaviour
         {
             Vector3 newPos = person.movement_direction;
 
-            // NavMesh 위 y값으로 보정
+            // Adjust the y-coordinate to match the NavMesh
             if (NavMesh.SamplePosition(newPos, out NavMeshHit navHit, 2f, NavMesh.AllAreas))
             {
                 newPos = navHit.position;
             }
             else
             {
-                Debug.LogWarning("NavMesh 위에 위치 없음, 스폰 생략");
+                Debug.LogWarning("No valid position found on the NavMesh. Skipping spawn.");
                 continue;
             }
 
-            // 아바타가 없는 경우 → 생성
+            // Create an avatar if it does not exist
             if (!avatarDict.ContainsKey(person.peopleID))
             {
                 GameObject newAvatar = Instantiate(avatarPrefab, newPos, Quaternion.Euler(0, -90, 0));
@@ -114,12 +114,12 @@ public class AvatarSpawner_C : MonoBehaviour
                     }
                 }
 
-                // NavMeshAgent가 없다면 붙여주기
+                // Add a NavMeshAgent if one does not exist
                 NavMeshAgent agent = newAvatar.GetComponent<NavMeshAgent>();
                 if (agent == null) agent = newAvatar.AddComponent<NavMeshAgent>();
 
-                agent.speed = person.movement_speed;       // 데이터 기반 속도
-                agent.acceleration = agent.speed * 2f;     // 부드럽게 달릴 수 있도록
+                agent.speed = person.movement_speed;       // Set speed based on the data
+                agent.acceleration = agent.speed * 2f;     // Enable smooth acceleration
                 agent.angularSpeed = 120f;
                 agent.SetDestination(newPos);
 
@@ -130,7 +130,7 @@ public class AvatarSpawner_C : MonoBehaviour
             }
             else
             {
-                // 이미 존재하는 아바타는 NavMeshAgent를 이용해 걷게 만들기
+                // Move the existing avatar using the NavMeshAgent
                 AvatarInfo info = avatarDict[person.peopleID];
                 NavMeshAgent agent = info.avatar.GetComponent<NavMeshAgent>();
 
