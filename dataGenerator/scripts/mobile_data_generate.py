@@ -14,13 +14,13 @@ def get_off_person():
     collection_name = 'people_data'
     collection = connect_mongo(collection_name)
     
-    #이전 문서 가져오기 
+    # Retrieve the previous document
     prev_doc = get_latest_document(collection)
     
-    #이전문서 바탕으로 새 문서 만들기 
+    # Create a new document based on the previous document
     new_doc = create_next_document_get_off(prev_doc, -1.11, 6.03)
     
-    #새 문서 db에 넣기
+    # Insert the new document into the database
     result = create_document(collection, new_doc)
     
     logging.info(result)
@@ -31,13 +31,13 @@ def get_on_person():
     collection_name = 'test_collection'
     collection = connect_mongo(collection_name)
     
-    #이전 문서 가져오기 
+    # Retrieve the previous document
     prev_doc = get_latest_document(collection)
     
-    #이전문서 바탕으로 새 문서 만들기 
+    # Create a new document based on the previous document
     new_doc = create_next_document_get_on(prev_doc, 1.11, -6.03)
     
-    #새 문서 db에 넣기
+    # Insert the new document into the database
     result = create_document(collection, new_doc)
     
     logging.info(result)
