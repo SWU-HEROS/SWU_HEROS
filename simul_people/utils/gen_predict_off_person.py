@@ -6,16 +6,16 @@ from bson import ObjectId
 from dataGenerator.utils.make_new_doc import * 
 
 
-#예측 사람 수 만큼 반복해서 사람 doc 추가 
+# Repeat to add person documents based on the predicted number of people
 def create_next_document_predict(prev_doc, iter_num, dy, dz, x, y, z, flag):
     
     new_doc = deepcopy(prev_doc)
     new_doc["_id"] = ObjectId()
     new_doc["datetime"] = (datetime.datetime.fromisoformat(prev_doc["datetime"]) + datetime.timedelta(minutes=5)).isoformat()
     
-    #함수로 나중에 빼기...시뮬레이션 업데이트에도 똑같이 있음 
+    # TODO: Refactor this into a separate function (also used for simulation updates)
     
-    #이전 문서의 사람들 좌표 업데이트
+    # Update the coordinates of people from the previous document
     for cell in new_doc["cells"]:
         for person in cell["people"]:
             old_loc = person["location"]
@@ -28,13 +28,13 @@ def create_next_document_predict(prev_doc, iter_num, dy, dz, x, y, z, flag):
     
     
     for _ in range(iter_num):
-        #data generator 함수 호출
+        # Call the data generator function
         add_person_to_cell(cell, flag, x, y, z)
 
     return new_doc
 
 
-#시뮬레이션 씬 동안 사람들 좌표 업데이트하는 함수 
+# Update people's coordinates during the simulation
 def update_people_coord(prev_doc, y, z):
     
     new_doc = deepcopy(prev_doc)
