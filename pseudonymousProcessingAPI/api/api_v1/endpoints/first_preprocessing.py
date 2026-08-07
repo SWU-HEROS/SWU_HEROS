@@ -7,18 +7,18 @@ router = APIRouter()
 
 @router.get('/first')
 async def frist_preprocess():
-    # 1. 시작 시간 기록
+    # 1. Record the start time
     start_time = time.time()
-    print(f"[lever 1] Start time: {start_time}")
+    print(f"[level 1] Start time: {start_time}")
 
-    # 2. 데이터 베이스 읽어오기
+    # 2. Read data from the database
     data = await read_data()
 
-    # 3. 종료 시간 기록
+    # 3. Record the end time
     end_time = time.time()
-    print(f"[lever 1] End time: {end_time}")
+    print(f"[level 1] End time: {end_time}")
 
-    # 4. 실행 시간 계산
+    # 4. Calculate the execution time
     execution_time = end_time - start_time
     print(f"[level 1] Execution time: {execution_time} seconds")
 
