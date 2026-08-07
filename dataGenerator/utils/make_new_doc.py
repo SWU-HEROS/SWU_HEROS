@@ -6,7 +6,7 @@ import datetime
 import copy 
 
 
-#사람 나이 통계 데이터 업데이트 
+# Update age statistics
 def calculate_statistics(people_list):
     ages = [p["age"] for p in people_list]
     average_age = round(sum(ages) / len(ages), 1)
@@ -14,7 +14,7 @@ def calculate_statistics(people_list):
     
     return {"average_age": average_age, "median_age": median_age}
 
-#사람 나이 분산 통계 업데이트 
+# Update age variance statistics
 def calculate_age_distribution(people_list):
     dist = {str(age): 0 for age in [10, 20, 30, 40, 50, 60, "70+"]}
     for p in people_list:
