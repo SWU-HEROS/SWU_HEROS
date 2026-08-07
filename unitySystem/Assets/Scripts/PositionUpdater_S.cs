@@ -10,7 +10,7 @@ public class PositionUpdater_S : MonoBehaviour
     private MongoClient client;
     private IMongoDatabase database;
 
-    //컬렉션 2개 정의
+    // Define two collections
     private IMongoCollection<BsonDocument> collectionC;
     private IMongoCollection<BsonDocument> collectionD;
     
@@ -20,12 +20,12 @@ public class PositionUpdater_S : MonoBehaviour
     public string collectionNameC = "test_collection_A";
     public string collectionNameD = "test_collection_B";
 
-    // ✅ 예측값 저장용 변수
+    // Variables for storing predicted values
     private int predictedOff = 0;
     private int predictedOn = 0;
     private DateTime currentPredictionTime;
 
-    private const int INTERVAL_MINUTES = 6;  // 배차 간격
+    private const int INTERVAL_MINUTES = 6;  // Train interval
 
     void Start()
     {
@@ -37,20 +37,22 @@ public class PositionUpdater_S : MonoBehaviour
 
         StartCoroutine(UpdatePositions());
 
-        // 예시: 시작 시점에서 예측값 설정 (실제 프로젝트에서는 PredictionManager에서 설정하게 됨)
-        SetPredictedValues(100, 120);  // 필요 시 제거
+        // Example: Set predicted values at startup
+        // In the actual project, these values will be set by PredictionManager
+        SetPredictedValues(100, 120);  // Remove if necessary
     }
 
     IEnumerator UpdatePositions()
     {
         while (true)
         {
-            // DB에서 주기적으로 새 데이터를 가져오는 루틴
+            // Periodically retrieve new data from the database
             yield return new WaitForSeconds(10f);
         }
     }
 
-    // 특정 컬렉션에서 데이터 가져오기
+    // Retrieve data from a specific collection
+
     public List<PersonData> GetCurrentPeopleData(string collectionId)
     {
         IMongoCollection<BsonDocument> targetCollection = null;
@@ -60,7 +62,7 @@ public class PositionUpdater_S : MonoBehaviour
             case "C": targetCollection = collectionC; break;
             case "D": targetCollection = collectionD; break;
             default:
-                Debug.LogError($"잘못된 collectionId: {collectionId}");
+                Debug.LogError($"Invalid collectionId: {collectionId}");
                 return new List<PersonData>();
         }
 
@@ -99,7 +101,7 @@ public class PositionUpdater_S : MonoBehaviour
         };
     }
 
-    // ✅ 예측값 수동 설정 (PredictionManager 등에서 호출 가능)
+    // Manually set predicted values (can be called by PredictionManager, etc.)
     public void SetPredictedValues(int onCount, int offCount)
     {
         predictedOn = onCount;
@@ -107,7 +109,7 @@ public class PositionUpdater_S : MonoBehaviour
         currentPredictionTime = DateTime.Now;
     }
 
-    // ✅ 외부 참조용 메서드 (AvatarSpawnerOn/Off에서 사용)
+    // Methods for external access (used by AvatarSpawnerOn/Off)
     public int GetRemainingBoardingCount()
     {
         return GetRemainingCount(predictedOn);
@@ -131,10 +133,10 @@ public class PositionUpdater_S : MonoBehaviour
     }
 
 
-    //테스트
+    // Test
     /*public List<PersonData> GetCurrentPeopleData()
     {
-        // 테스트용 더미 데이터 리스트
+        // Dummy data list for testing
         return new List<PersonData>
         {
             new PersonData
@@ -177,8 +179,8 @@ public class PositionUpdater_S : MonoBehaviour
     }*/
 
 
-    // ✅ AvatarSpawnerOn/Off 등 외부에서 호출해 현재 사람 정보 가져오는 메서드 
-    // 컬렉션이 하나일 때만 필요함
+    // Method called externally by AvatarSpawnerOn/Off to retrieve current person data
+    // Only required when using a single collection
     /*public List<PersonData> GetCurrentPeopleData()
     {
         var docs = collection.Find(Builders<BsonDocument>.Filter.Empty).ToList();
