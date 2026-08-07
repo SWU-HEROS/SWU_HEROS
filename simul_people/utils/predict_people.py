@@ -19,7 +19,7 @@ def request_get_on_num(payload):
         get_on_items = get_on_response.json()[0]
         get_on_predicts = get_on_items['yhat']
         
-        print(f'예측 승차인원:{get_on_predicts}')
+        print(f'Predicted boarding passengers: {get_on_predicts}')
     
     
     return get_on_predicts
@@ -35,7 +35,7 @@ def request_get_off_num(payload):
         get_off_items = get_off_response.json()[0]
         get_off_predicts = get_off_items['yhat']
         
-        print(f'예측 하차인원:{get_off_predicts}')
+        print(f'Predicted alighting passengers: {get_off_predicts}')
     
     
     return get_off_predicts
