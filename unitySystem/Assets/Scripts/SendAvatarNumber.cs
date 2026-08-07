@@ -7,8 +7,8 @@ public class SendAvatarNumber : MonoBehaviour
 {
     private string serverURL = "http://localhost/PBLUnityDB/personal.php";
     private Rigidbody rb;
-    private float rotationSpeed = 5.0f; // 회전 속도
-    private float fetchInterval = 3.0f; // 좌표 갱신 주기
+    private float rotationSpeed = 5.0f; // Rotation speed
+    private float fetchInterval = 3.0f; // Coordinate update interval
 
     void Start()
     {
@@ -59,7 +59,8 @@ public class SendAvatarNumber : MonoBehaviour
 
     void ParseAndMoveAvatar(string serverResponse)
     {
-        // 문자열에서 "Coordinate X: "과 같은 부분을 제거하고 숫자 값만 추출하여 좌표를 구함
+        // Remove labels such as "Coordinate X:" from the response
+        // and extract only the numeric coordinate values
         string[] coordinatesInfo = serverResponse.Split(new string[] { "<br>" }, System.StringSplitOptions.None);
         float x = 0, y = 0, z = 0;
         foreach (string info in coordinatesInfo)
@@ -81,20 +82,20 @@ public class SendAvatarNumber : MonoBehaviour
             }
         }
 
-        // 좌표값을 이용하여 이동
+        // Move using the coordinate values
         Vector3 targetPosition = new Vector3(x, y, z);
         StartCoroutine(MoveToTargetPosition(targetPosition));
     }
 
     IEnumerator MoveToTargetPosition(Vector3 targetPosition)
     {
-        float moveSpeed = 5.0f; // 이동 속도
+        float moveSpeed = 5.0f; // Movement speed
         while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
-            // 목표 위치까지 부드럽게 이동합니다.
+            // Move smoothly toward the target position
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-            // 목표 방향으로 회전
+            // Rotate toward the target direction
             Quaternion targetRotation = Quaternion.LookRotation(targetPosition - transform.position);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
