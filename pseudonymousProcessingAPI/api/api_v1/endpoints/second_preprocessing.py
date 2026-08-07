@@ -8,25 +8,25 @@ update_data = []
 
 @router.get('/second')
 async def second_preprocess():
-    # 1. 시작 시간 기록
+    # 1. Record the start time
     start_time = time.time()
     print(f"[level 2] Start time: {start_time}", flush=True)
 
-    # 2. 데이터 베이스 읽어오기
+    # 2. Read data from the database
     data = await read_data()
     
-    # 3. 사람 객체만 가져오기 
+    # 3. Extract person objects
     for privacy in data:
         privacy = privacy.dict()
         
         for cell in privacy['cells']:
             for person in cell['people']:
                 
-                # 4. IMSI 정보 지우기, 전화번호 지우기
+                # 4. Remove IMSI and mobile number information
                 del person['mobile_number']
                 del person['IMSI']
                 
-                # 5. 나이 가명 처리 
+                # 5. Apply age pseudonymization
                 if person['age'] > 20 and person['age'] <30 :
                     person['age'] = 'mid_20s'
                 
@@ -47,11 +47,11 @@ async def second_preprocess():
                                   
         update_data.append(privacy)
 
-    # 6. 종료 시간 기록
+    # 6. Record the end time
     end_time = time.time()
     print(f"[level 2] End time: {end_time}", flush=True)
 
-    # 7. 실행 시간 계산
+    # 7. Calculate the execution time
     execution_time = end_time - start_time
     print(f"[level 2] Execution time: {execution_time} seconds", flush=True)           
 
