@@ -11,25 +11,25 @@ age = [0, 0, 0, 0]
 @router.get('/third')
 async def second_preprocess():
     
-    # 1. 시작 시간 기록
+    # 1. Record the start time
     start_time = time.time()
     print(f"[level 3] Start time: {start_time}", flush=True)
     
-    # 2. 데이터 베이스 읽어오기
+    # 2. Read data from the database
     data = await read_data()
     
     
     #print(data, flush=True)
     
-    # 3. 사람 객체만 가져오기
+    # 3. Iterate through person objects
     for privacy in data:
         privacy = privacy.dict()
         
         for cell in privacy['cells']:
-            #4. age_distribution 삭제
+            # 4. Remove the existing age distribution
             del cell['age_distribution']
             
-            #5. age_distribution 추가 
+            # 5. Initialize a new age distribution
             cell['age_distribution'] ={
                 "youth": 0,
                 "middle_aged": 0,
@@ -37,15 +37,15 @@ async def second_preprocess():
                 "elderly": 0
             }
 
-            #6. 2단계 가명 처리 
+            # 6. Apply level 2 pseudonymization
             for person in cell['people']:
                 
-                # 7. IMSI 정보 지우기, 전화번호 지우기, 성별 지우기
+                # 7. Remove mobile number, IMSI, and gender information
                 del person['mobile_number']
                 del person['IMSI']
                 del person['gender']
                 
-                # 8. 나이 가명 처리
+                # 8. Apply age pseudonymization
                 if person['age'] > 20 and person['age'] <30 :
                     person['age'] = 'mid_20s'
                     age[0]+=1
@@ -70,7 +70,7 @@ async def second_preprocess():
                     person['age'] = 'mid_70s'
                     age[4]+=1
                 
-            # 9. 나이 분포 업데이트
+            # 9. Update the age distribution
             cell['age_distribution']['youth'] = age[0]
             cell['age_distribution']['middle_aged'] = age[1]
             cell['age_distribution']['senior'] = age[2]
@@ -78,11 +78,11 @@ async def second_preprocess():
         
         update_data.append(privacy) 
         
-    # 10. 종료 시간 기록
+    # 10. Record the end time
     end_time = time.time()
     print(f"[level 3] End time: {end_time}", flush=True)
 
-    # 11. 실행 시간 계산
+    # 11. Calculate the execution time
     execution_time = end_time - start_time
     print(f"[level 3] Execution time: {execution_time} seconds", flush=True)
                      
