@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class PeopleManager_B : MonoBehaviour
 {
     public GameObject avatarPrefab;
-    public string collectionName = "test_collection"; // 승차
+    public string collectionName = "test_collection"; // Boarding
 
     public string mongoConnectionString = "mongodb://localhost:27017";
     public string dbName = "HEROS";
@@ -17,7 +17,7 @@ public class PeopleManager_B : MonoBehaviour
     private class AvatarInfo
     {
         public GameObject avatar;
-        public NavMeshAgent agent;  // ✅ 추가
+        public NavMeshAgent agent;  // Added
         public Vector3 targetPosition;
         public float moveDuration = 10f;
         public float elapsedTime = 0f;
@@ -29,11 +29,11 @@ public class PeopleManager_B : MonoBehaviour
 
     void Start()
     {
-        Debug.Log($"[PeopleManager_B] Start() 호출됨. MongoDB 연결 시도...");
+        Debug.Log($"[PeopleManager_B] Start() called. Attempting to connect to MongoDB...");
         var client = new MongoClient(mongoConnectionString);
         var database = client.GetDatabase(dbName);
         collection = database.GetCollection<BsonDocument>(collectionName);
-        Debug.Log($"[PeopleManager_B] MongoDB 연결 완료. 사용할 컬렉션: {collectionName}");
+        Debug.Log($"[PeopleManager_B] Connected to MongoDB. Collection in use: {collectionName}");
 
         LoadInitialPeople();
         StartCoroutine(UpdatePositions());
@@ -141,8 +141,8 @@ public class PeopleManager_B : MonoBehaviour
                 NavMeshAgent agent = avatar.GetComponent<NavMeshAgent>();
                 if (agent == null) agent = avatar.AddComponent<NavMeshAgent>();
 
-                agent.Warp(pos);                     // NavMesh 위로 이동
-                agent.speed = person.movement_speed; // 속도 세팅
+                agent.Warp(pos);                     // Move onto the NavMesh
+                agent.speed = person.movement_speed; // Set movement speed
 
                 peopleDict[person.peopleID] = new AvatarInfo
                 {
@@ -155,10 +155,10 @@ public class PeopleManager_B : MonoBehaviour
 
     public void UpdatePersonPosition(string peopleID, Vector3 newPosition)
     {
-        // 1️⃣ NavMesh 위 좌표 확인
+        // 1. Check whether the position is on the NavMesh
         if (!NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
         {
-            Debug.LogWarning($"[PeopleManager_B] {peopleID} 위치가 NavMesh 위에 없음, 이동 생략");
+            Debug.LogWarning($"[PeopleManager_B] {peopleID} is not on the NavMesh. Skipping movement.");
             return;
         }
 
@@ -166,26 +166,26 @@ public class PeopleManager_B : MonoBehaviour
 
         if (!peopleDict.ContainsKey(peopleID))
         {
-            // 2️⃣ 아바타 생성
+            // 2. Create an avatar
             GameObject avatar = Instantiate(avatarPrefab, newPosition, Quaternion.Euler(0, 180, 0));
             avatar.name = peopleID;
 
-            // 3️⃣ NavMeshAgent 확인 & Warp
+            // 3. Check the NavMeshAgent and warp the avatar
             NavMeshAgent agent = avatar.GetComponent<NavMeshAgent>();
             if (agent == null) agent = avatar.AddComponent<NavMeshAgent>();
 
-            agent.Warp(newPosition);   // 먼저 NavMesh 위로 이동
+            agent.Warp(newPosition);   // Move onto the NavMesh first
             agent.SetDestination(newPosition);
 
             peopleDict[peopleID] = new AvatarInfo { avatar = avatar, agent = agent };
             return;
         }
 
-        // 이미 존재하는 아바타
+        // Existing avatar
         AvatarInfo info = peopleDict[peopleID];
         NavMeshAgent agentExisting = info.agent ?? info.avatar.AddComponent<NavMeshAgent>();
 
-        agentExisting.Warp(agentExisting.transform.position); // 현재 위치를 NavMesh 위로
+        agentExisting.Warp(agentExisting.transform.position); // Move the current position onto the NavMesh
         agentExisting.SetDestination(newPosition);
     }
 }
