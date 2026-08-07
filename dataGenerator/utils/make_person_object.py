@@ -28,8 +28,8 @@ def get_age_group(age):
         else:
             return f"{'early' if age < 75 else 'mid'}_70"
 
-def generate_person(index, flag, x, y, z): #flag -> id 시작 번호/ x, y, z의 범위(tuple )
-    #사람 객체 생성 
+def generate_person(index, flag, x, y, z): # flag -> starting ID and x, y, z coordinate ranges (tuple)
+    # Generate a person object
     age = random.randint(10, 90)
     gender = random.choice(["male", "female"])
     mobile = generate_moblie_number()
