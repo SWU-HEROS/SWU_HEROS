@@ -22,9 +22,9 @@ db.people_data.insertMany([
           median_age: 30
         },
         event: {
-          name: "야구 경기 (두산 vs 한화)",
+          name: "Baseball Game (Doosan vs. Hanwha)",
           event_date: "2024-08-26T18:00:00/2024-08-26T22:00:00",
-          event_location: "잠실 경기장"
+          event_location: "Jamsil Baseball Stadium"
         },
         people: [
           {
