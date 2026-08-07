@@ -17,7 +17,7 @@ public class ResultUIManager : MonoBehaviour
         string timeStr = $"{Mathf.FloorToInt(elapsedSeconds)} seconds";
         resultText.text = $"Simulation ended! ({reason})\n\n" +
                           $"Total elapsed time: {timeStr}\n" +
-                          $"Number of non-stop occurrences: {nonStopCount}";
+                          $"Number of Station non-stop: {nonStopCount}";
 
         resultPanel.SetActive(true);
     }

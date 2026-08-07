@@ -132,10 +132,10 @@ public class PositionUpdater : MonoBehaviour
     }
 
     // Test
-    public List GetCurrentPeopleData()
+    public List<PersonData> GetCurrentPeopleData()
     {
         // Dummy data list for testing
-        return new List
+        return new List<PersonData>
         {
             new PersonData
             {
