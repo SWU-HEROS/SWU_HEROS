@@ -30,7 +30,7 @@ public class AvatarSpawner_D : MonoBehaviour
 
         if (positionUpdater == null)
         {
-            Debug.LogError("[Spawner-하차] PositionUpdater_S를 찾을 수 없습니다. PositionUpdaterObject가 활성화되어 있는지 확인하세요!");
+            Debug.LogError("[Spawner-Alighting] PositionUpdater_S was not found. Make sure that PositionUpdaterObject is active.");
             return;
         }
 
@@ -80,10 +80,10 @@ public class AvatarSpawner_D : MonoBehaviour
         {
             Vector3 targetPos = person.movement_direction;
 
-            // NavMesh 위 위치로 보정
+            // Adjust the position to the NavMesh
             if (!NavMesh.SamplePosition(targetPos, out NavMeshHit navHit, 2f, NavMesh.AllAreas))
             {
-                Debug.LogWarning($"NavMesh 위에 없음. {person.peopleID} 생략");
+                Debug.LogWarning($"No valid position found on the NavMesh. Skipping {person.peopleID}.");
                 continue;
             }
 
@@ -91,7 +91,7 @@ public class AvatarSpawner_D : MonoBehaviour
 
             if (!avatarDict.TryGetValue(person.peopleID, out AvatarInfo info))
             {
-                // 최초 생성
+                // Initial spawn
                 GameObject newAvatar = Instantiate(avatarPrefab, targetPos, Quaternion.Euler(0, -90, 0));
                 newAvatar.name = person.peopleID;
 
@@ -119,7 +119,7 @@ public class AvatarSpawner_D : MonoBehaviour
             }
             else
             {
-                // 목적지만 업데이트
+                // Update the destination only
                 if (info.agent == null)
                 {
                     info.agent = info.avatar.GetComponent<NavMeshAgent>();
