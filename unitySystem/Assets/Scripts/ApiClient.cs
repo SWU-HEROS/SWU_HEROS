@@ -10,13 +10,13 @@ public class ApiClient : MonoBehaviour
     private string apiUrl2 = "http://localhost:8000/second/second";
     private string apiUrl3 = "http://localhost:8000/third/third";
 
-    public Button button1;
+    //public Button button1;
     public Button button2;
     public Button button3;
 
     void Start()
     {
-        button1.onClick.AddListener(() => StartCoroutine(GetDataFromApi(apiUrl1, "Button 1")));
+        //button1.onClick.AddListener(() => StartCoroutine(GetDataFromApi(apiUrl1, "Button 1")));
         button2.onClick.AddListener(() => StartCoroutine(GetDataFromApi(apiUrl2, "Button 2")));
         button3.onClick.AddListener(() => StartCoroutine(GetDataFromApi(apiUrl3, "Button 3")));
     }
