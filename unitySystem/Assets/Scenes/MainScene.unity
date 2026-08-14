@@ -12910,8 +12910,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.500004, y: -0.94000244}
-  m_SizeDelta: {x: 119.5664, y: 39.69}
+  m_AnchoredPosition: {x: -24.500004, y: 12}
+  m_SizeDelta: {x: 119.5664, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &779901327
 MonoBehaviour:
@@ -12953,7 +12953,7 @@ MonoBehaviour:
     m_FontSize: 20
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -12961,7 +12961,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Please select the subway non-stop start level
+  m_Text: "Please Select The Subway Station \nNon-Stop Level"
 --- !u!222 &779901329
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28040,7 +28040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3c694376e91834d8de6c3d252d7d8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  button1: {fileID: 0}
   button2: {fileID: 1503755818}
   button3: {fileID: 597226948}
 --- !u!114 &1851111578
