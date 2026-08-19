@@ -4,13 +4,13 @@ class PredictRequest(BaseModel):
     ds: str
     is_weekend: int
     is_halloween: int
+    dayofweek_0: int
     dayofweek_1: int
     dayofweek_2: int
     dayofweek_3: int
     dayofweek_4: int
     dayofweek_5: int
     dayofweek_6: int
-    dayofweek_7: int
     month_1: int
     month_2: int
     month_3: int
@@ -23,6 +23,7 @@ class PredictRequest(BaseModel):
     month_10: int
     month_11: int
     month_12: int
+    hour_0: int
     hour_1: int
     hour_2: int
     hour_3: int
@@ -46,4 +47,3 @@ class PredictRequest(BaseModel):
     hour_21: int
     hour_22: int
     hour_23: int
-    hour_24: int
